@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "452778201370",
+    "firebase_url": "https://sanvi-7961d.firebaseio.com",
+    "project_id": "sanvi-7961d",
+    "storage_bucket": "sanvi-7961d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452778201370:android:fd3b23583d28b4101a1ca3",
+        "android_client_info": {
+          "package_name": "com.example.sanvi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452778201370-9s2069g8s1sb9pe35dn74hvrgsr7aiv5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sanvi",
+            "certificate_hash": "9e9ddaeeace5d2fbc9f20e4769624fd96ed532a8"
+          }
+        },
+        {
+          "client_id": "452778201370-5vphkoe73g3hgch0omj043g3a5qvmvb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-y_VUpM3GZVIMqFEs0bxKpk9P4MOby1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452778201370-5vphkoe73g3hgch0omj043g3a5qvmvb7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
