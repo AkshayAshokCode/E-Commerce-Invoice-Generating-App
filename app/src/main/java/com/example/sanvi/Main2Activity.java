@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -19,11 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -45,9 +39,6 @@ public class Main2Activity extends AppCompatActivity {
     String type;
     String date;
     String amount;
-    FirebaseFirestore fStore;
-    FirebaseAuth fAuth;
-    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +50,6 @@ public class Main2Activity extends AppCompatActivity {
         dateButton=findViewById(R.id.dateButton);
         dateText=findViewById(R.id.dateText);
         e7=findViewById(R.id.editText7);
-
-        fAuth=FirebaseAuth.getInstance();
-        fStore=FirebaseFirestore.getInstance();
-
         Intent i=getIntent();
         Bundle b=i.getExtras();
         phoneNumber=b.getString("number");
@@ -107,31 +94,21 @@ public class Main2Activity extends AppCompatActivity {
                 amount=e7.getText().toString();
                 date=dateText.getText().toString();
 
-                //       if (TextUtils.isEmpty(amount) || TextUtils.isEmpty(date))
-         {
+                      if (TextUtils.isEmpty(amount) || TextUtils.isEmpty(date))
+                Toast.makeText(getApplicationContext(),"All Fields are Mandatory",Toast.LENGTH_SHORT).show();
+        else {
                     type = mySpinner.getSelectedItem().toString();
                     user.put("date",date);
                     user.put("amount", amount);
-             userID=fAuth.getCurrentUser().getUid();
-             DocumentReference documentReference= fStore.collection("Users").document(userID);
 
-             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                 @Override
-                 public void onSuccess(Void aVoid) {
-                     Log.d(TAG,"Successful in adding Data");
-                 }
-             });
-                    if (type.equals("Mobile OTP")) {
+                  if (type.equals("Mobile OTP")) {
                         Intent i = new Intent(Main2Activity.this, Main3Activity.class);
                         i.putExtra("number", phoneNumber);
+                        i.putExtra("data",user);
                         startActivity(i);
-                    } else if (type.equals("Signature on Mobile Screen")) {
-                        Intent i = new Intent(Main2Activity.this, Main3bActivity.class);
-                        startActivity(i);
+
                     }
                 }
-               // else
-                 //   Toast.makeText(getApplicationContext(),"All Fields are Mandatory",Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -12,13 +13,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -29,21 +34,20 @@ public class Main3Activity extends AppCompatActivity {
     EditText otp;
     FirebaseAuth mAuth;
     String codeSent;
-    String phoneNumber;
-    HashMap<String, String> user;
+    FirebaseFirestore fStore;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mAuth=FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
         next=findViewById(R.id.next2);
         back=findViewById(R.id.back2);
         otp=findViewById(R.id.editText8);
 
-        sendVerificationCode();
-        Intent i=getIntent();
-        Bundle b=i.getExtras();
+
 
 
 
@@ -57,7 +61,9 @@ public class Main3Activity extends AppCompatActivity {
                     return;
                 }
 
-                    verifySignInCode(code);
+
+
+                verifySignInCode(code);
                 }
         });
 
@@ -69,11 +75,13 @@ public class Main3Activity extends AppCompatActivity {
 
         }
     });
-}
-    private void sendVerificationCode(){
         Intent i=getIntent();
         Bundle b=i.getExtras();
-        phoneNumber=(String) b.get("number");
+       String phoneNumber=(String) b.get("number");
+        sendVerificationCode(phoneNumber);
+}
+    private void sendVerificationCode(String phoneNumber){
+
         if(phoneNumber.length()!=13) {
             Toast.makeText(getApplicationContext(), "Please Enter a Valid Number", Toast.LENGTH_SHORT).show();
             return;
@@ -98,7 +106,7 @@ public class Main3Activity extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
-            Toast.makeText(getApplicationContext(), "Verification failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -113,9 +121,22 @@ public class Main3Activity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent i=new Intent(Main3Activity.this,Main4Activity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Intent b=getIntent();
+                            HashMap<String, String> user = (HashMap<String, String>)b.getSerializableExtra("data");
 
+                            userID=mAuth.getCurrentUser().getUid();
+                            Toast.makeText(getApplicationContext(),"Database stored", Toast.LENGTH_SHORT);
+                            DocumentReference documentReference= fStore.collection("Users").document(userID);
+
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("TAG","Successful in adding Data");
+                                }
+                            });
+                            Intent i=new Intent(Main3Activity.this,Main3bActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.putExtra("userID",userID);
 
                             startActivity(i);
 

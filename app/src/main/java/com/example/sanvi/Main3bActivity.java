@@ -22,6 +22,7 @@ public class Main3bActivity extends AppCompatActivity {
     SignaturePad signaturePad;
     Button saveButton, clearButton;
     Bitmap signature;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,11 @@ public class Main3bActivity extends AppCompatActivity {
         clearButton = findViewById(R.id.clearButton);
         saveButton.setEnabled(false);
         clearButton.setEnabled(false);
+
+        Intent i=getIntent();
+        Bundle b=i.getExtras();
+        userID=b.getString("userID");
+
         signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
 
             @Override
@@ -73,8 +79,10 @@ public class Main3bActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signature=signaturePad.getSignatureBitmap();
-                Intent i = new Intent(Main3bActivity.this, Main4bActivity.class);
+                Intent i = new Intent(Main3bActivity.this, Main4Activity.class);
+                i.putExtra("userID",userID);
            //    i.putExtra("sign",signature);
+
                 startActivity(i);
             }
         });

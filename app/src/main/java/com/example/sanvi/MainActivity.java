@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,9 +19,6 @@ Button next;
 EditText mobile;
     String number;
     String c1,c2,c3,c4,c6;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +45,13 @@ EditText mobile;
                 c3=e3.getText().toString();
                 c6=e6.getText().toString();
                 number = mobile.getText().toString();
-       /*         if(TextUtils.isEmpty(c1) || TextUtils.isEmpty(c2) ||
-                        TextUtils.isEmpty(c3) || TextUtils.isEmpty(c4) || TextUtils.isEmpty(number) ||
-                        TextUtils.isEmpty(c6))
-                    Toast.makeText(getApplicationContext(), "All Fields are Mandatory", Toast.LENGTH_SHORT).show();
-                 else if(number.length()!=13)
-                    Toast.makeText(getApplicationContext(), "Invalid Number", Toast.LENGTH_SHORT).show();
-                else */{
+               if(c1.isEmpty() || c2.isEmpty() || c3.isEmpty() || number.isEmpty() || c6.isEmpty()) {
+                   Toast.makeText(getApplicationContext(), "All Fields are Mandatory", Toast.LENGTH_SHORT).show();
+               }
+               else if(number.length()!=13) {
+                   Toast.makeText(getApplicationContext(), "Invalid Number", Toast.LENGTH_SHORT).show();
+               }
+                else {
                     user.put("Customer Store",c1);
                     user.put("Sales Member Name",c2);
                     user.put("Customer Contact Name",c3);

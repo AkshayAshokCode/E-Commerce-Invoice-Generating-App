@@ -2,6 +2,5 @@
     <string name="app_name">SanVi</string>
     <string-array name="vertification">
         <item>Mobile OTP</item>
-        <item>Signature on Mobile Screen</item>
     </string-array>
 </resources>

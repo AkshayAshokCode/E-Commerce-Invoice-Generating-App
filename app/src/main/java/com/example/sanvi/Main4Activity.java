@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class Main4Activity extends AppCompatActivity {
     Button share, help;
-    TextView t1,t2,t3,t4,t5,t6,t7,date;
+    TextView t1,t2,t3,t5,t6,t7,date;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID;
@@ -34,14 +34,22 @@ public class Main4Activity extends AppCompatActivity {
        t1=findViewById((R.id.t1));
         t2=findViewById((R.id.t2));
         t3=findViewById((R.id.t3));
-        t4=findViewById((R.id.t4));
         t5=findViewById((R.id.t5));
         t6=findViewById((R.id.t6));
         t7=findViewById((R.id.t7));
         date=findViewById(R.id.date);
         share=findViewById(R.id.share);
         help=findViewById(R.id.help);
-        userID=fAuth.getCurrentUser().getUid();
+
+       Intent i=getIntent();
+       Bundle b=i.getExtras();
+       userID=b.getString("userID");
+
+          /*    Intent intent = getIntent();
+        Bitmap bitmap = (Bitmap) intent.getParcelableExtra("sign");
+        viewBitmap.setImageBitmap(bitmap);
+    */
+
        final DocumentReference documentReference=fStore.collection("Users").document(userID);
        documentReference.addSnapshotListener(this,new EventListener<DocumentSnapshot>() {
            @Override
@@ -50,8 +58,7 @@ public class Main4Activity extends AppCompatActivity {
                t1.setText(documentSnapshot.getString("Customer Store"));
                t2.setText(documentSnapshot.getString("Customer Contact Name"));
                t3.setText(documentSnapshot.getString("Sales Member Name"));
-               t4.setText(documentSnapshot.getString("amount"));
-               // t5.setText(documentSnapshot.getString());
+               t5.setText(documentSnapshot.getString("amount"));
                t6.setText(documentSnapshot.getString("Customer Mobile"));
                t7.setText(documentSnapshot.getString("Customer Email"));
            }
